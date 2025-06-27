@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wim Hof Method - Altitude Training</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .app-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .app-header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .app-header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .main-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .tab-navigation {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            background: #f0f0f0;
+            color: #666;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .tab-button.active {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Breathing Session Styles */
+        .breathing-visualizer {
+            width: 250px;
+            height: 250px;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+
+        .breath-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle, #667eea, #764ba2);
+            position: absolute;
+            transition: transform 0.3s ease;
+            opacity: 0.8;
+        }
+
+        .breath-circle.inhaling {
+            animation: breatheIn 4s ease-in-out;
+        }
+
+        .breath-circle.exhaling {
+            animation: breatheOut 2s ease-in-out;
+        }
+
+        .breath-circle.holding {
+            transform: scale(1.2);
+            background: radial-gradient(circle, #48bb78, #38a169);
+        }
+
+        @keyframes breatheIn {
+            from { transform: scale(0.8); }
+            to { transform: scale(1.3); }
+        }
+
+        @keyframes breatheOut {
+            from { transform: scale(1.3); }
+            to { transform: scale(0.8); }
+        }
+
+        .breath-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .session-controls {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .control-button {
+            padding: 15px 30px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-weight: bold;
+        }
+
+        .start-button {
+            background: #48bb78;
+        }
+
+        .start-button:hover {
+            background: #38a169;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(72, 187, 120, 0.3);
+        }
+
+        .stop-button {
+            background: #f56565;
+        }
+
+        .stop-button:hover {
+            background: #e53e3e;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245, 101, 101, 0.3);
+        }
+
+        .session-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .info-card {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+        }
+
+        .info-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-card p {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2d3748;
+        }
+
+        /* Progress Tracking Styles */
+        .progress-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-card h4 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .stat-card .stat-value {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-card .stat-label {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .session-history {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .history-date {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .history-stats {
+            text-align: right;
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Insights Styles */
+        .insight-card {
+            background: #f0f9ff;
+            border: 2px solid #667eea;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .insight-card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .insight-card p {
+            line-height: 1.6;
+            color: #4a5568;
+        }
+
+        .progress-chart {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* Settings Styles */
+        .settings-section {
+            margin-bottom: 30px;
+        }
+
+        .settings-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #f7fafc;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .setting-label {
+            font-weight: 500;
+            color: #4a5568;
+        }
+
+        .setting-input {
+            padding: 8px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 100px;
+            text-align: center;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 25px;
+            background: #e2e8f0;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .toggle-switch.active {
+            background: #667eea;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 2.5px;
+            left: 2.5px;
+            transition: transform 0.3s;
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(25px);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .modal h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .modal p {
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #4a5568;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .modal-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .modal-button.primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .modal-button.secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -40%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .app-header h1 {
+                font-size: 2em;
+            }
+
+            .breathing-visualizer {
+                width: 200px;
+                height: 200px;
+            }
+
+            .control-button {
+                padding: 12px 20px;
+                font-size: 16px;
+            }
+
+            .stat-card .stat-value {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="app-header">
+            <h1>🏔️ Wim Hof Method Training</h1>
+            <p>Altitude Preparation & Performance Enhancement</p>
+        </div>
+
+        <div class="main-card">
+            <div class="tab-navigation">
+                <button class="tab-button active" onclick="switchTab('session')">Session</button>
+                <button class="tab-button" onclick="switchTab('progress')">Progress</button>
+                <button class="tab-button" onclick="switchTab('insights')">Insights</button>
+                <button class="tab-button" onclick="switchTab('settings')">Settings</button>
+            </div>
+
+            <!-- Session Tab -->
+            <div id="session-tab" class="tab-content active">
+                <div id="intro-section" style="margin-bottom: 30px;">
+                    <div class="insight-card" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-color: #667eea;">
+                        <h3>🏔️ Welcome to the Wim Hof Method</h3>
+                        <p style="margin-bottom: 15px;">This breathing technique will help prepare your body for high-altitude performance by training your respiratory system and building stress resilience. Perfect for your upcoming 14er challenge!</p>
+                        
+                        <h4 style="color: #667eea; margin: 20px 0 10px 0;">How Each Session Works:</h4>
+                        <ol style="margin-left: 20px; line-height: 1.8;">
+                            <li><strong>Breathing Phase (30 breaths):</strong> Take deep, rhythmic breaths - inhaling fully and exhaling naturally. You'll feel tingling and warmth as your body becomes alkaline.</li>
+                            <li><strong>Retention Phase:</strong> After the last exhale, hold your breath as long as comfortable. Don't force it! Your body is adapting to lower oxygen levels, similar to altitude.</li>
+                            <li><strong>Recovery Breath:</strong> When you need air, take a deep breath and hold for 15 seconds to reset your system.</li>
+                            <li><strong>Repeat:</strong> Complete 3-4 rounds for a full session (customizable in Settings).</li>
+                        </ol>
+                        
+                        <div style="background: #fff; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                            <h4 style="color: #f56565; margin-bottom: 10px;">⚠️ Safety First:</h4>
+                            <ul style="margin-left: 20px; color: #4a5568; line-height: 1.6;">
+                                <li>Always practice sitting or lying down (never standing)</li>
+                                <li>Never practice in water or while driving</li>
+                                <li>Stop if you feel unwell</li>
+                                <li>Don't force breath holds - comfort is key</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="breathing-visualizer">
+                    <div id="breath-circle" class="breath-circle"></div>
+                    <div class="breath-text">
+                        <div id="breath-instruction">Ready to Begin</div>
+                        <div id="breath-counter" style="font-size: 48px;"></div>
+                    </div>
+                </div>
+
+                <div class="session-controls">
+                    <button id="start-button" class="control-button start-button" onclick="startSession()">Start Session</button>
+                    <button id="stop-button" class="control-button stop-button" onclick="stopSession()" style="display: none;">Stop Session</button>
+                </div>
+
+                <div class="session-info">
+                    <div class="info-card">
+                        <h3>Round</h3>
+                        <p id="current-round">0 / 4</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Phase</h3>
+                        <p id="current-phase">Ready</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Hold Time</h3>
+                        <p id="hold-time">0:00</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Total Time</h3>
+                        <p id="total-time">0:00</p>
+                    </div>
+                </div>
+
+                <div class="insight-card">
+                    <h3>💡 Session Tips</h3>
+                    <p id="session-tips">Find a comfortable seated position with your spine straight. Focus on the rhythm rather than forcing anything. The tingling sensation during breathing is normal - it's your body becoming more alkaline. Press spacebar during holds when you need to breathe.</p>
+                </div>
+            </div>
+
+            <!-- Progress Tab -->
+            <div id="progress-tab" class="tab-content">
+                <div class="progress-stats">
+                    <div class="stat-card">
+                        <h4>Total Sessions</h4>
+                        <div class="stat-value" id="total-sessions">0</div>
+                        <div class="stat-label">completed</div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Average Hold Time</h4>
+                        <div class="stat-value" id="avg-hold-time">0:00</div>
+                        <div class="stat-label">per round</div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Best Hold Time</h4>
+                        <div class="stat-value" id="best-hold-time">0:00</div>
+                        <div class="stat-label">personal record</div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Current Streak</h4>
+                        <div class="stat-value" id="current-streak">0</div>
+                        <div class="stat-label">days</div>
+                    </div>
+                </div>
+
+                <h3 style="margin-bottom: 15px; color: #667eea;">Session History</h3>
+                <div class="session-history" id="session-history">
+                    <p style="text-align: center; color: #999;">No sessions recorded yet. Complete your first session to see your history!</p>
+                </div>
+            </div>
+
+            <!-- Insights Tab -->
+            <div id="insights-tab" class="tab-content">
+                <div class="insight-card">
+                    <h3>📊 Performance Analysis</h3>
+                    <p id="performance-analysis">Complete a few sessions to unlock personalized performance insights and recommendations for your altitude training.</p>
+                </div>
+
+                <div class="insight-card">
+                    <h3>🏔️ Altitude Readiness</h3>
+                    <p id="altitude-readiness">Your breath hold times and consistency will help determine your readiness for high-altitude activities. Keep practicing to build your resilience!</p>
+                </div>
+
+                <div class="insight-card">
+                    <h3>💪 Training Recommendations</h3>
+                    <p id="training-recommendations">Start with 2-3 rounds per session and gradually increase as you become more comfortable. Focus on consistency rather than pushing for longer holds.</p>
+                </div>
+
+                <div class="progress-chart" id="progress-chart">
+                    <h3 style="color: #667eea; margin-bottom: 15px;">Hold Time Progress</h3>
+                    <canvas id="chart-canvas" width="400" height="200"></canvas>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settings-tab" class="tab-content">
+                <div class="settings-section">
+                    <h3>Session Configuration</h3>
+                    <div class="setting-item">
+                        <span class="setting-label">Number of Rounds</span>
+                        <input type="number" class="setting-input" id="rounds-setting" value="4" min="1" max="10">
+                    </div>
+                    <div class="setting-item">
+                        <span class="setting-label">Breaths per Round</span>
+                        <input type="number" class="setting-input" id="breaths-setting" value="30" min="20" max="40">
+                    </div>
+                    <div class="setting-item">
+                        <span class="setting-label">Recovery Hold Duration (seconds)</span>
+                        <input type="number" class="setting-input" id="recovery-setting" value="15" min="10" max="30">
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Audio & Feedback</h3>
+                    <div class="setting-item">
+                        <span class="setting-label">Sound Effects</span>
+                        <div class="toggle-switch active" id="sound-toggle" onclick="toggleSetting('sound')"></div>
+                    </div>
+                    <div class="setting-item">
+                        <span class="setting-label">Voice Guidance</span>
+                        <div class="toggle-switch active" id="voice-toggle" onclick="toggleSetting('voice')"></div>
+                    </div>
+                    <div class="setting-item">
+                        <span class="setting-label">Vibration (Mobile)</span>
+                        <div class="toggle-switch" id="vibration-toggle" onclick="toggleSetting('vibration')"></div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Data Management</h3>
+                    <div class="setting-item">
+                        <span class="setting-label">Export Session Data</span>
+                        <button class="control-button" style="background: #667eea; padding: 8px 20px; font-size: 14px;" onclick="exportData()">Export CSV</button>
+                    </div>
+                    <div class="setting-item">
+                        <span class="setting-label">Clear All Data</span>
+                        <button class="control-button" style="background: #f56565; padding: 8px 20px; font-size: 14px;" onclick="showClearDataModal()">Clear Data</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="session-complete-modal" class="modal">
+        <div class="modal-content">
+            <h2>🎉 Session Complete!</h2>
+            <p id="session-summary"></p>
+            <div class="modal-buttons">
+                <button class="modal-button primary" onclick="closeModal('session-complete-modal')">Great!</button>
+                <button class="modal-button secondary" onclick="startSession()">Go Again</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="clear-data-modal" class="modal">
+        <div class="modal-content">
+            <h2>⚠️ Clear All Data?</h2>
+            <p>This will permanently delete all your session history and progress data. This action cannot be undone.</p>
+            <div class="modal-buttons">
+                <button class="modal-button secondary" onclick="closeModal('clear-data-modal')">Cancel</button>
+                <button class="modal-button primary" style="background: #f56565;" onclick="clearAllData()">Clear Data</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let sessionActive = false;
+        let currentRound = 0;
+        let currentBreath = 0;
+        let currentPhase = 'ready'; // ready, breathing, holding, recovery
+        let sessionTimer = null;
+        let holdTimer = null;
+        let phaseTimer = null;
+        let sessionStartTime = null;
+        let roundHoldTimes = [];
+        let currentHoldStart = null;
+        
+        // Settings
+        let settings = {
+            rounds: 4,
+            breathsPerRound: 30,
+            recoveryHold: 15,
+            soundEnabled: true,
+            voiceEnabled: true,
+            vibrationEnabled: false
+        };
+
+        // Load settings and data on page load
+        window.onload = function() {
+            loadSettings();
+            loadSessionData();
+            updateProgressStats();
+            updateInsights();
+            initializeChart();
+        };
+
+        // Tab switching
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            // Update insights when switching to that tab
+            if (tabName === 'insights') {
+                updateInsights();
+                drawProgressChart();
+            }
+        }
+
+        // Session control functions
+        function startSession() {
+            sessionActive = true;
+            currentRound = 1;
+            currentBreath = 0;
+            roundHoldTimes = [];
+            sessionStartTime = Date.now();
+            
+            // Hide intro section during session
+            document.getElementById('intro-section').style.display = 'none';
+            
+            document.getElementById('start-button').style.display = 'none';
+            document.getElementById('stop-button').style.display = 'inline-block';
+            
+            updateSessionInfo();
+            startBreathingPhase();
+        }
+
+        function stopSession() {
+            sessionActive = false;
+            clearInterval(sessionTimer);
+            clearInterval(holdTimer);
+            clearInterval(phaseTimer);
+            
+            // Show intro section again
+            document.getElementById('intro-section').style.display = 'block';
+            
+            document.getElementById('start-button').style.display = 'inline-block';
+            document.getElementById('stop-button').style.display = 'none';
+            
+            resetVisualizer();
+            updateSessionInfo();
+            
+            // Save partial session if any rounds were completed
+            if (roundHoldTimes.length > 0) {
+                saveSession();
+            }
+        }
+
+        function startBreathingPhase() {
+            currentPhase = 'breathing';
+            currentBreath = 0;
+            updateSessionInfo();
+            
+            const breathCircle = document.getElementById('breath-circle');
+            const instruction = document.getElementById('breath-instruction');
+            const counter = document.getElementById('breath-counter');
+            
+            instruction.textContent = 'Breathe In';
+            
+            // Breathing animation loop
+            let inhaling = true;
+            phaseTimer = setInterval(() => {
+                if (!sessionActive) return;
+                
+                if (inhaling) {
+                    breathCircle.className = 'breath-circle inhaling';
+                    instruction.textContent = 'Breathe In';
+                    speak('In');
+                } else {
+                    breathCircle.className = 'breath-circle exhaling';
+                    instruction.textContent = 'Breathe Out';
+                    speak('Out');
+                    currentBreath++;
+                    counter.textContent = currentBreath;
+                }
+                
+                inhaling = !inhaling;
+                
+                // Check if breathing phase is complete
+                if (currentBreath >= settings.breathsPerRound) {
+                    clearInterval(phaseTimer);
+                    startHoldPhase();
+                }
+            }, 2000); // 2 seconds per breath (4 seconds total)
+        }
+
+        function startHoldPhase() {
+            currentPhase = 'holding';
+            currentHoldStart = Date.now();
+            updateSessionInfo();
+            
+            const breathCircle = document.getElementById('breath-circle');
+            const instruction = document.getElementById('breath-instruction');
+            const counter = document.getElementById('breath-counter');
+            
+            breathCircle.className = 'breath-circle holding';
+            instruction.textContent = 'Hold Your Breath';
+            counter.textContent = '';
+            
+            speak('Now hold your breath. Stay relaxed.');
+            
+            let holdSeconds = 0;
+            holdTimer = setInterval(() => {
+                if (!sessionActive) return;
+                
+                holdSeconds++;
+                document.getElementById('hold-time').textContent = formatTime(holdSeconds);
+                
+                // Provide encouraging messages
+                if (holdSeconds === 30) {
+                    speak('Great job, keep going if comfortable');
+                } else if (holdSeconds === 60) {
+                    speak('One minute! Listen to your body');
+                }
+            }, 1000);
+        }
+
+        function endHold() {
+            if (currentPhase !== 'holding') return;
+            
+            clearInterval(holdTimer);
+            const holdDuration = Math.floor((Date.now() - currentHoldStart) / 1000);
+            roundHoldTimes.push(holdDuration);
+            
+            startRecoveryPhase();
+        }
+
+        function startRecoveryPhase() {
+            currentPhase = 'recovery';
+            updateSessionInfo();
+            
+            const breathCircle = document.getElementById('breath-circle');
+            const instruction = document.getElementById('breath-instruction');
+            const counter = document.getElementById('breath-counter');
+            
+            breathCircle.className = 'breath-circle inhaling';
+            instruction.textContent = 'Deep Breath In and Hold';
+            counter.textContent = settings.recoveryHold;
+            
+            speak('Take a deep breath in and hold');
+            
+            let recoverySeconds = settings.recoveryHold;
+            phaseTimer = setInterval(() => {
+                if (!sessionActive) return;
+                
+                recoverySeconds--;
+                counter.textContent = recoverySeconds;
+                
+                if (recoverySeconds <= 0) {
+                    clearInterval(phaseTimer);
+                    completeRound();
+                }
+            }, 1000);
+        }
+
+        function completeRound() {
+            if (currentRound >= settings.rounds) {
+                completeSession();
+            } else {
+                currentRound++;
+                updateSessionInfo();
+                
+                // Brief pause before next round
+                const breathCircle = document.getElementById('breath-circle');
+                const instruction = document.getElementById('breath-instruction');
+                const counter = document.getElementById('breath-counter');
+                
+                breathCircle.className = 'breath-circle';
+                instruction.textContent = 'Relax...';
+                counter.textContent = '';
+                
+                speak(`Round ${currentRound} starting in 3 seconds`);
+                
+                setTimeout(() => {
+                    if (sessionActive) {
+                        startBreathingPhase();
+                    }
+                }, 3000);
+            }
+        }
+
+        function completeSession() {
+            sessionActive = false;
+            const totalTime = Math.floor((Date.now() - sessionStartTime) / 1000);
+            
+            // Show intro section again
+            document.getElementById('intro-section').style.display = 'block';
+            
+            document.getElementById('start-button').style.display = 'inline-block';
+            document.getElementById('stop-button').style.display = 'none';
+            
+            resetVisualizer();
+            
+            // Save session data
+            saveSession();
+            
+            // Show completion modal
+            const avgHold = Math.floor(roundHoldTimes.reduce((a, b) => a + b, 0) / roundHoldTimes.length);
+            const bestHold = Math.max(...roundHoldTimes);
+            
+            document.getElementById('session-summary').innerHTML = `
+                <strong>Total Time:</strong> ${formatTime(totalTime)}<br>
+                <strong>Rounds Completed:</strong> ${currentRound}<br>
+                <strong>Average Hold:</strong> ${formatTime(avgHold)}<br>
+                <strong>Best Hold:</strong> ${formatTime(bestHold)}<br><br>
+                ${getSessionFeedback(avgHold, bestHold)}
+            `;
+            
+            showModal('session-complete-modal');
+        }
+
+        function saveSession() {
+            const sessions = JSON.parse(localStorage.getItem('whmSessions') || '[]');
+            const session = {
+                date: new Date().toISOString(),
+                rounds: currentRound,
+                holdTimes: roundHoldTimes,
+                totalTime: Math.floor((Date.now() - sessionStartTime) / 1000),
+                avgHold: Math.floor(roundHoldTimes.reduce((a, b) => a + b, 0) / roundHoldTimes.length),
+                bestHold: Math.max(...roundHoldTimes)
+            };
+            
+            sessions.push(session);
+            localStorage.setItem('whmSessions', JSON.stringify(sessions));
+            
+            updateProgressStats();
+            updateSessionHistory();
+        }
+
+        function updateSessionInfo() {
+            document.getElementById('current-round').textContent = `${currentRound} / ${settings.rounds}`;
+            document.getElementById('current-phase').textContent = 
+                currentPhase === 'ready' ? 'Ready' :
+                currentPhase === 'breathing' ? 'Breathing' :
+                currentPhase === 'holding' ? 'Holding' :
+                'Recovery';
+            
+            // Update total time
+            if (sessionStartTime) {
+                const elapsed = Math.floor((Date.now() - sessionStartTime) / 1000);
+                document.getElementById('total-time').textContent = formatTime(elapsed);
+            }
+        }
+
+        function resetVisualizer() {
+            const breathCircle = document.getElementById('breath-circle');
+            const instruction = document.getElementById('breath-instruction');
+            const counter = document.getElementById('breath-counter');
+            
+            breathCircle.className = 'breath-circle';
+            instruction.textContent = 'Ready to Begin';
+            counter.textContent = '';
+            
+            document.getElementById('current-round').textContent = '0 / 4';
+            document.getElementById('current-phase').textContent = 'Ready';
+            document.getElementById('hold-time').textContent = '0:00';
+            document.getElementById('total-time').textContent = '0:00';
+        }
+
+        // Progress tracking functions
+        function updateProgressStats() {
+            const sessions = JSON.parse(localStorage.getItem('whmSessions') || '[]');
+            
+            if (sessions.length === 0) {
+                document.getElementById('total-sessions').textContent = '0';
+                document.getElementById('avg-hold-time').textContent = '0:00';
+                document.getElementById('best-hold-time').textContent = '0:00';
+                document.getElementById('current-streak').textContent = '0';
+                return;
+            }
+            
+            // Total sessions
+            document.getElementById('total-sessions').textContent = sessions.length;
+            
+            // Average hold time
+            const allHolds = sessions.flatMap(s => s.holdTimes);
+            const avgHold = Math.floor(allHolds.reduce((a, b) => a + b, 0) / allHolds.length);
+            document.getElementById('avg-hold-time').textContent = formatTime(avgHold);
+            
+            // Best hold time
+            const bestHold = Math.max(...allHolds);
+            document.getElementById('best-hold-time').textContent = formatTime(bestHold);
+            
+            // Current streak
+            const streak = calculateStreak(sessions);
+            document.getElementById('current-streak').textContent = streak;
+            
+            updateSessionHistory();
+        }
+
+        function updateSessionHistory() {
+            const sessions = JSON.parse(localStorage.getItem('whmSessions') || '[]');
+            const historyDiv = document.getElementById('session-history');
+            
+            if (sessions.length === 0) {
+                historyDiv.innerHTML = '<p style="text-align: center; color: #999;">No sessions recorded yet. Complete your first session to see your history!</p>';
+                return;
+            }
+            
+            // Show last 10 sessions
+            const recentSessions = sessions.slice(-10).reverse();
+            historyDiv.innerHTML = recentSessions.map(session => {
+                const date = new Date(session.date);
+                return `
+                    <div class="history-item">
+                        <div>
+                            <div class="history-date">${date.toLocaleDateString()}</div>
+                            <div style="font-size: 12px; color: #999;">${date.toLocaleTimeString()}</div>
+                        </div>
+                        <div class="history-stats">
+                            <div>Rounds: ${session.rounds}</div>
+                            <div>Avg Hold: ${formatTime(session.avgHold)}</div>
+                            <div>Best: ${formatTime(session.bestHold)}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function calculateStreak(sessions) {
+            if (sessions.length === 0) return 0;
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            let streak = 0;
+            let currentDate = new Date(today);
+            
+            // Sort sessions by date (newest first)
+            const sortedSessions = [...sessions].sort((a, b) => 
+                new Date(b.date) - new Date(a.date)
+            );
+            
+            for (let i = 0; i < 30; i++) { // Check last 30 days
+                const dayStart = new Date(currentDate);
+                const dayEnd = new Date(currentDate);
+                dayEnd.setDate(dayEnd.getDate() + 1);
+                
+                const hasSession = sortedSessions.some(s => {
+                    const sessionDate = new Date(s.date);
+                    return sessionDate >= dayStart && sessionDate < dayEnd;
+                });
+                
+                if (hasSession) {
+                    streak++;
+                } else if (i > 0) { // Don't break on today if no session yet
+                    break;
+                }
+                
+                currentDate.setDate(currentDate.getDate() - 1);
+            }
+            
+            return streak;
+        }
+
+        // Insights functions
+        function updateInsights() {
+            const sessions = JSON.parse(localStorage.getItem('whmSessions') || '[]');
+            
+            if (sessions.length < 3) {
+                return; // Need at least 3 sessions for meaningful insights
+            }
+            
+            // Performance analysis
+            const recentSessions = sessions.slice(-7);
+            const avgRecent = calculateAverageHold(recentSessions);
+            const avgAll = calculateAverageHold(sessions);
+            const improvement = ((avgRecent - avgAll) / avgAll * 100).toFixed(1);
+            
+            let performanceText = '';
+            if (improvement > 10) {
+                performanceText = `Excellent progress! Your recent average hold time (${formatTime(avgRecent)}) is ${improvement}% better than your overall average. Your training is paying off!`;
+            } else if (improvement > 0) {
+                performanceText = `You're improving steadily. Your recent holds average ${formatTime(avgRecent)}, which is ${improvement}% above your overall average. Keep up the consistent practice!`;
+            } else {
+                performanceText = `Your recent performance is slightly below your average. This is normal - progress isn't always linear. Focus on consistency and proper technique rather than forcing longer holds.`;
+            }
+            
+            document.getElementById('performance-analysis').textContent = performanceText;
+            
+            // Altitude readiness
+            let readinessText = '';
+            if (avgRecent >= 90) {
+                readinessText = `Outstanding! With average holds over 90 seconds, you're developing excellent breath control for high-altitude activities. Your body is adapting well to controlled hypoxia.`;
+            } else if (avgRecent >= 60) {
+                readinessText = `Good progress! Holding for 60+ seconds shows improving CO2 tolerance. This translates to better adaptation at altitude. Continue building to 90+ second holds.`;
+            } else {
+                readinessText = `You're building a foundation. Focus on relaxation during holds rather than forcing duration. As you practice, your CO2 tolerance will naturally improve, preparing you for altitude challenges.`;
+            }
+            
+            document.getElementById('altitude-readiness').textContent = readinessText;
+            
+            // Training recommendations
+            const consistency = calculateConsistency(sessions);
+            let recommendationText = '';
+            
+            if (consistency > 0.8) {
+                recommendationText = `Excellent consistency! You're practicing regularly. Consider adding one more round per session or trying morning and evening sessions for accelerated adaptation.`;
+            } else if (consistency > 0.5) {
+                recommendationText = `Good practice frequency. Try to maintain daily sessions for optimal results. Set a specific time each day to build the habit. Morning sessions can energize your day!`;
+            } else {
+                recommendationText = `Increase your practice frequency for better results. Aim for at least 5 sessions per week. Even 10-minute sessions are valuable. Consistency beats intensity!`;
+            }
+            
+            document.getElementById('training-recommendations').textContent = recommendationText;
+        }
+
+        function calculateAverageHold(sessions) {
+            const allHolds = sessions.flatMap(s => s.holdTimes);
+            return Math.floor(allHolds.reduce((a, b) => a + b, 0) / allHolds.length);
+        }
+
+        function calculateConsistency(sessions) {
+            if (sessions.length < 7) return 0;
+            
+            const lastWeek = new Date();
+            lastWeek.setDate(lastWeek.getDate() - 7);
+            
+            const recentSessions = sessions.filter(s => 
+                new Date(s.date) > lastWeek
+            );
+            
+            return recentSessions.length / 7;
+        }
+
+        // Chart functions
+        function initializeChart() {
+            const canvas = document.getElementById('chart-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size for high DPI displays
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = 400 * dpr;
+            canvas.height = 200 * dpr;
+            canvas.style.width = '400px';
+            canvas.style.height = '200px';
+            ctx.scale(dpr, dpr);
+        }
+
+        function drawProgressChart() {
+            const sessions = JSON.parse(localStorage.getItem('whmSessions') || '[]');
+            if (sessions.length < 2) return;
+            
+            const canvas = document.getElementById('chart-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, 400, 200);
+            
+            // Get last 10 sessions
+            const recentSessions = sessions.slice(-10);
+            const avgHolds = recentSessions.map(s => s.avgHold);
+            const maxHold = Math.max(...avgHolds);
+            const minHold = Math.min(...avgHolds);
+            
+            // Draw axes
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(40, 20);
+            ctx.lineTo(40, 160);
+            ctx.lineTo(380, 160);
+            ctx.stroke();
+            
+            // Draw grid lines
+            ctx.strokeStyle = '#f7fafc';
+            ctx.lineWidth = 1;
+            for (let i = 1; i <= 4; i++) {
+                ctx.beginPath();
+                ctx.moveTo(40, 160 - (i * 35));
+                ctx.lineTo(380, 160 - (i * 35));
+                ctx.stroke();
+            }
+            
+            // Draw data line
+            ctx.strokeStyle = '#667eea';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            const xStep = 340 / (avgHolds.length - 1);
+            avgHolds.forEach((hold, index) => {
+                const x = 40 + (index * xStep);
+                const y = 160 - ((hold - minHold) / (maxHold - minHold) * 140);
+                
+                if (index === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            });
+            ctx.stroke();
+            
+            // Draw data points
+            ctx.fillStyle = '#667eea';
+            avgHolds.forEach((hold, index) => {
+                const x = 40 + (index * xStep);
+                const y = 160 - ((hold - minHold) / (maxHold - minHold) * 140);
+                
+                ctx.beginPath();
+                ctx.arc(x, y, 4, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            
+            // Draw labels
+            ctx.fillStyle = '#4a5568';
+            ctx.font = '12px sans-serif';
+            ctx.textAlign = 'right';
+            
+            // Y-axis labels
+            for (let i = 0; i <= 4; i++) {
+                const value = Math.round(minHold + (i * (maxHold - minHold) / 4));
+                ctx.fillText(formatTime(value), 35, 165 - (i * 35));
+            }
+            
+            // Title
+            ctx.textAlign = 'center';
+            ctx.font = '14px sans-serif';
+            ctx.fillText('Average Hold Time Trend', 200, 185);
+        }
+
+        // Settings functions
+        function loadSettings() {
+            const saved = localStorage.getItem('whmSettings');
+            if (saved) {
+                settings = JSON.parse(saved);
+                document.getElementById('rounds-setting').value = settings.rounds;
+                document.getElementById('breaths-setting').value = settings.breathsPerRound;
+                document.getElementById('recovery-setting').value = settings.recoveryHold;
+                
+                document.getElementById('sound-toggle').className = 
+                    settings.soundEnabled ? 'toggle-switch active' : 'toggle-switch';
+                document.getElementById('voice-toggle').className = 
+                    settings.voiceEnabled ? 'toggle-switch active' : 'toggle-switch';
+                document.getElementById('vibration-toggle').className = 
+                    settings.vibrationEnabled ? 'toggle-switch active' : 'toggle-switch';
+            }
+            
+            // Add change listeners
+            document.getElementById('rounds-setting').addEventListener('change', saveSettings);
+            document.getElementById('breaths-setting').addEventListener('change', saveSettings);
+            document.getElementById('recovery-setting').addEventListener('change', saveSettings);
+        }
+
+        function saveSettings() {
+            settings.rounds = parseInt(document.getElementById('rounds-setting').value);
+            settings.breathsPerRound = parseInt(document.getElementById('breaths-setting').value);
+            settings.recoveryHold = parseInt(document.getElementById('recovery-setting').value);
+            
+            localStorage.setItem('whmSettings', JSON.stringify(settings));
+        }
+
+        function toggleSetting(type) {
+            const toggle = document.getElementById(type + '-toggle');
+            toggle.classList.toggle('active');
+            
+            switch(type) {
+                case 'sound':
+                    settings.soundEnabled = toggle.classList.contains('active');
+                    break;
+                case 'voice':
+                    settings.voiceEnabled = toggle.classList.contains('active');
+                    break;
+                case 'vibration':
+                    settings.vibrationEnabled = toggle.classList.contains('active');
+                    break;
+            }
+            
+            saveSettings();
+        }
+
+        // Data management functions
+        function loadSessionData() {
+            const sessions = localStorage.getItem('whmSessions');
+            if (!sessions) {
+                localStorage.setItem('whmSessions', '[]');
+            }
+        }
+
+        function exportData() {
+            const sessions = JSON.parse(localStorage.getItem('whmSessions') || '[]');
+            
+            if (sessions.length === 0) {
+                alert('No sessions to export!');
+                return;
+            }
+            
+            // Convert to CSV
+            let csv = 'Date,Time,Rounds,Average Hold (seconds),Best Hold (seconds),Total Time (seconds)\n';
+            
+            sessions.forEach(session => {
+                const date = new Date(session.date);
+                csv += `${date.toLocaleDateString()},${date.toLocaleTimeString()},${session.rounds},${session.avgHold},${session.bestHold},${session.totalTime}\n`;
+            });
+            
+            // Download
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `whm-sessions-${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        function showClearDataModal() {
+            showModal('clear-data-modal');
+        }
+
+        function clearAllData() {
+            if (confirm('Are you absolutely sure? This cannot be undone.')) {
+                localStorage.removeItem('whmSessions');
+                localStorage.removeItem('whmSettings');
+                location.reload();
+            }
+        }
+
+        // Modal functions
+        function showModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Helper functions
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function speak(text) {
+            if (!settings.voiceEnabled) return;
+            
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.9;
+                utterance.pitch = 1;
+                utterance.volume = 0.8;
+                speechSynthesis.speak(utterance);
+            }
+        }
+
+        function getSessionFeedback(avgHold, bestHold) {
+            if (bestHold >= 120) {
+                return "🏆 Incredible performance! You're mastering the technique and building exceptional breath control for altitude.";
+            } else if (bestHold >= 90) {
+                return "💪 Excellent session! Your breath holds are getting stronger. You're well on your way to altitude readiness.";
+            } else if (bestHold >= 60) {
+                return "👍 Great work! You're building solid foundations. Keep practicing daily to increase your hold times.";
+            } else {
+                return "✨ Good start! Remember, it's not about forcing - relaxation is key. Your body is learning and adapting.";
+            }
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Space' && currentPhase === 'holding') {
+                event.preventDefault();
+                endHold();
+            } else if (event.code === 'Enter' && !sessionActive) {
+                event.preventDefault();
+                startSession();
+            } else if (event.code === 'Escape' && sessionActive) {
+                event.preventDefault();
+                stopSession();
+            }
+        });
+
+        // Update timer every second when session is active
+        setInterval(() => {
+            if (sessionActive && sessionStartTime) {
+                const elapsed = Math.floor((Date.now() - sessionStartTime) / 1000);
+                document.getElementById('total-time').textContent = formatTime(elapsed);
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
