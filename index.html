@@ -725,6 +725,35 @@
         </div>
     </div>
 
+    <div id="keyboard-shortcuts-modal" class="modal">
+        <div class="modal-content">
+            <h2>⌨️ Keyboard Shortcuts</h2>
+            <div style="text-align: left; margin: 20px 0;">
+                <div style="display: grid; gap: 15px;">
+                    <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e2e8f0;">
+                        <span style="font-weight: 500;">Start Session</span>
+                        <kbd style="background: #f7fafc; padding: 4px 8px; border-radius: 4px; font-family: monospace; border: 1px solid #e2e8f0;">Enter</kbd>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e2e8f0;">
+                        <span style="font-weight: 500;">Stop Session</span>
+                        <kbd style="background: #f7fafc; padding: 4px 8px; border-radius: 4px; font-family: monospace; border: 1px solid #e2e8f0;">Escape</kbd>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e2e8f0;">
+                        <span style="font-weight: 500;">End Breath Hold</span>
+                        <kbd style="background: #f7fafc; padding: 4px 8px; border-radius: 4px; font-family: monospace; border: 1px solid #e2e8f0;">Space</kbd>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e2e8f0;">
+                        <span style="font-weight: 500;">Show Shortcuts</span>
+                        <kbd style="background: #f7fafc; padding: 4px 8px; border-radius: 4px; font-family: monospace; border: 1px solid #e2e8f0;">Shift + /</kbd>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-button primary" onclick="closeModal('keyboard-shortcuts-modal')">Got it!</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Global variables
         let sessionActive = false;
@@ -1398,6 +1427,16 @@
             document.getElementById(modalId).style.display = 'none';
         }
 
+        // Close modal when clicking outside
+        document.addEventListener('click', function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (modal.style.display === 'block' && event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+
         // Helper functions
         function formatTime(seconds) {
             const mins = Math.floor(seconds / 60);
@@ -1437,9 +1476,24 @@
             } else if (event.code === 'Enter' && !sessionActive) {
                 event.preventDefault();
                 startSession();
-            } else if (event.code === 'Escape' && sessionActive) {
+            } else if (event.code === 'Escape') {
+                // Check if any modal is open first
+                const openModal = Array.from(document.querySelectorAll('.modal')).find(modal => 
+                    modal.style.display === 'block'
+                );
+                
+                if (openModal) {
+                    // Close modal if one is open
+                    event.preventDefault();
+                    openModal.style.display = 'none';
+                } else if (sessionActive) {
+                    // Only stop session if no modal is open
+                    event.preventDefault();
+                    stopSession();
+                }
+            } else if (event.code === 'Slash' && event.shiftKey) {
                 event.preventDefault();
-                stopSession();
+                showModal('keyboard-shortcuts-modal');
             }
         });
 
