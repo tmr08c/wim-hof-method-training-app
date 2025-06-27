@@ -117,6 +117,7 @@
         .breath-circle.holding {
             transform: scale(1.2);
             background: radial-gradient(circle, #48bb78, #38a169);
+            cursor: pointer;
         }
 
         @keyframes breatheIn {
@@ -176,6 +177,16 @@
             background: #e53e3e;
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(245, 101, 101, 0.3);
+        }
+
+        .done-hold-button {
+            background: #38a169;
+        }
+
+        .done-hold-button:hover {
+            background: #2f855a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(56, 161, 105, 0.3);
         }
 
         .session-info {
@@ -509,7 +520,7 @@
                 </div>
 
                 <div class="breathing-visualizer">
-                    <div id="breath-circle" class="breath-circle"></div>
+                    <div id="breath-circle" class="breath-circle" onclick="endHoldOnClick()"></div>
                     <div class="breath-text">
                         <div id="breath-instruction">Ready to Begin</div>
                         <div id="breath-counter" style="font-size: 48px;"></div>
@@ -518,7 +529,10 @@
 
                 <div class="session-controls">
                     <button id="start-button" class="control-button start-button" onclick="startSession()">Start Session</button>
-                    <button id="stop-button" class="control-button stop-button" onclick="stopSession()" style="display: none;">Stop Session</button>
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                        <button id="done-hold-button" class="control-button done-hold-button" onclick="endHold()" style="display: none;">Done Holding Breath<br><span style="font-size: 12px; font-weight: normal; opacity: 0.9;">or hit space</span></button>
+                        <button id="stop-button" class="control-button stop-button" onclick="stopSession()" style="display: none;">Stop Session</button>
+                    </div>
                 </div>
 
                 <div class="session-info">
@@ -542,7 +556,8 @@
 
                 <div class="insight-card">
                     <h3>💡 Session Tips</h3>
-                    <p id="session-tips">Find a comfortable seated position with your spine straight. Focus on the rhythm rather than forcing anything. The tingling sensation during breathing is normal - it's your body becoming more alkaline. Press spacebar during holds when you need to breathe.</p>
+                    <p id="session-tips">Find a comfortable seated position with your spine straight. Focus on the rhythm rather than forcing anything. The tingling sensation during breathing is normal - it's your body becoming more alkaline.</p>
+                    <p id="hold-hints" style="display: none; margin-top: 15px; padding: 15px; background: #e6f7ff; border-radius: 8px; border-left: 4px solid #1890ff;">💡 <strong>During breath hold:</strong> Click the breathing circle or press the "Done Holding Breath" button when you need to breathe.</p>
                 </div>
             </div>
 
@@ -823,6 +838,7 @@
             document.getElementById('intro-section').style.display = 'none';
             
             document.getElementById('start-button').style.display = 'none';
+            document.getElementById('done-hold-button').style.display = 'none';
             document.getElementById('stop-button').style.display = 'inline-block';
             
             updateSessionInfo();
@@ -839,6 +855,7 @@
             document.getElementById('intro-section').style.display = 'block';
             
             document.getElementById('start-button').style.display = 'inline-block';
+            document.getElementById('done-hold-button').style.display = 'none';
             document.getElementById('stop-button').style.display = 'none';
             
             resetVisualizer();
@@ -901,6 +918,9 @@
             instruction.textContent = 'Hold Your Breath';
             counter.textContent = '';
             
+            // Show done hold button
+            document.getElementById('done-hold-button').style.display = 'block';
+            
             speak('Now hold your breath. Stay relaxed.');
             
             let holdSeconds = 0;
@@ -926,7 +946,17 @@
             const holdDuration = Math.floor((Date.now() - currentHoldStart) / 1000);
             roundHoldTimes.push(holdDuration);
             
+            // Hide done hold button
+            document.getElementById('done-hold-button').style.display = 'none';
+            
             startRecoveryPhase();
+        }
+        
+        function endHoldOnClick() {
+            // Only end hold if we're in the holding phase
+            if (currentPhase === 'holding') {
+                endHold();
+            }
         }
 
         function startRecoveryPhase() {
@@ -991,6 +1021,7 @@
             document.getElementById('intro-section').style.display = 'block';
             
             document.getElementById('start-button').style.display = 'inline-block';
+            document.getElementById('done-hold-button').style.display = 'none';
             document.getElementById('stop-button').style.display = 'none';
             
             resetVisualizer();
