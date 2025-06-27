@@ -71,6 +71,10 @@
             min-width: 120px;
         }
 
+        .tab-button.session-tab {
+            flex-basis: 100%;
+        }
+
         .tab-button.active {
             background: #667eea;
             color: white;
@@ -475,9 +479,10 @@
 
         <div class="main-card">
             <div class="tab-navigation">
-                <button class="tab-button active" onclick="switchTab('session')">Session</button>
+                <button class="tab-button session-tab active" onclick="switchTab('session')">Session</button>
                 <button class="tab-button" onclick="switchTab('progress')">Progress</button>
                 <button class="tab-button" onclick="switchTab('insights')">Insights</button>
+                <button class="tab-button" onclick="switchTab('about')">About</button>
                 <button class="tab-button" onclick="switchTab('settings')">Settings</button>
             </div>
 
@@ -600,6 +605,59 @@
                 </div>
             </div>
 
+            <!-- About Tab -->
+            <div id="about-tab" class="tab-content">
+                <div class="insight-card">
+                    <h3>🏔️ About the Wim Hof Method</h3>
+                    <p>The Wim Hof Method is a powerful breathing technique developed by Wim Hof, also known as "The Iceman." This method combines specific breathing patterns, cold exposure, and meditation to help you develop control over your autonomic nervous system and build resilience to stress.</p>
+                    
+                    <p>This breathing technique works by temporarily changing the chemistry of your blood, making it more alkaline and training your body to function efficiently in low-oxygen environments - perfect preparation for high-altitude activities.</p>
+                    
+                    <p style="margin-top: 15px;"><strong>Learn more:</strong> <a href="https://www.wimhofmethod.com/breathing-exercises" target="_blank" style="color: #667eea; text-decoration: none;">Official Wim Hof Method Breathing Exercises</a></p>
+                    
+                    <p style="font-size: 12px; color: #666; margin-top: 10px;"><em>Content adapted from the official Wim Hof Method. All credit to Wim Hof and his team for developing this powerful technique.</em></p>
+                </div>
+                
+                <div class="insight-card">
+                    <h3>💪 Why Practice the Wim Hof Method?</h3>
+                    <div style="margin-left: 20px;">
+                        <h4 style="color: #667eea; margin: 15px 0 10px 0;">🏔️ Altitude Preparation</h4>
+                        <p>Training your body to function with less oxygen helps prepare you for high-altitude environments where oxygen levels are reduced. This is especially valuable for mountaineering, hiking at elevation, or any high-altitude activities.</p>
+                        
+                        <h4 style="color: #667eea; margin: 15px 0 10px 0;">🧘 Stress Resilience</h4>
+                        <p>Regular practice builds mental resilience and helps you maintain calm under pressure. The controlled stress of breath holding trains your nervous system to handle challenging situations more effectively.</p>
+                        
+                        <h4 style="color: #667eea; margin: 15px 0 10px 0;">⚡ Energy & Focus</h4>
+                        <p>Many practitioners report improved energy levels, better focus, and enhanced mental clarity. The technique can be energizing and help you start your day with intention.</p>
+                        
+                        <h4 style="color: #667eea; margin: 15px 0 10px 0;">🔬 Scientific Benefits</h4>
+                        <p>Research suggests the method may help reduce inflammation, boost immune function, and improve overall well-being through controlled activation of the sympathetic nervous system.</p>
+                    </div>
+                </div>
+                
+                <div class="insight-card">
+                    <h3>📱 How This App Works</h3>
+                    <div style="margin-left: 20px;">
+                        <h4 style="color: #667eea; margin: 15px 0 10px 0;">🎯 Guided Sessions</h4>
+                        <p>The app provides visual, audio, and haptic guidance through each phase of the breathing cycle. Follow the breathing visualizer and audio cues to maintain proper rhythm and timing.</p>
+                        
+                        <h4 style="color: #667eea; margin: 15px 0 10px 0;">📊 Progress Tracking</h4>
+                        <p>Your session data is automatically saved and analyzed to show your improvement over time. Track your hold times, consistency, and overall progress toward your goals.</p>
+                        
+                        <h4 style="color: #667eea; margin: 15px 0 10px 0;">🎛️ Customization</h4>
+                        <p>Adjust the number of rounds, breaths per round, and other settings to match your experience level and goals. Start with shorter sessions and gradually increase as you build capacity.</p>
+                        
+                        <h4 style="color: #667eea; margin: 15px 0 10px 0;">💾 Privacy First</h4>
+                        <p>All your data is stored locally on your device - nothing is sent to external servers. Your breathing practice data remains completely private and under your control.</p>
+                        
+                        <h4 style="color: #667eea; margin: 15px 0 10px 0;">⌨️ Keyboard Controls</h4>
+                        <p><strong>Spacebar:</strong> End breath hold when you need to breathe<br>
+                        <strong>Enter:</strong> Start a new session<br>
+                        <strong>Escape:</strong> Stop current session</p>
+                    </div>
+                </div>
+            </div>
+            
             <!-- Settings Tab -->
             <div id="settings-tab" class="tab-content">
                 <div class="settings-section">
