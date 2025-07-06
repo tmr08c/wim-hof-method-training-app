@@ -889,19 +889,29 @@
                     speak('In');
                 } else {
                     breathCircle.className = 'breath-circle exhaling';
-                    instruction.textContent = 'Breathe Out';
-                    speak('Out');
                     currentBreath++;
                     counter.textContent = currentBreath;
+                    
+                    // Check if this is the final breath
+                    if (currentBreath >= settings.breathsPerRound) {
+                        instruction.textContent = 'Let it go...';
+                        speak('Let it go');
+                        // Don't say "Out" on the final breath since we're about to hold
+                        clearInterval(phaseTimer);
+                        // Give a moment for the exhale before starting hold
+                        setTimeout(() => {
+                            if (sessionActive) {
+                                startHoldPhase();
+                            }
+                        }, 2000);
+                        return; // Exit to prevent further processing
+                    } else {
+                        instruction.textContent = 'Breathe Out';
+                        speak('Out');
+                    }
                 }
                 
                 inhaling = !inhaling;
-                
-                // Check if breathing phase is complete
-                if (currentBreath >= settings.breathsPerRound) {
-                    clearInterval(phaseTimer);
-                    startHoldPhase();
-                }
             }, 2000); // 2 seconds per breath (4 seconds total)
         }
 
